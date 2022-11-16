@@ -1,15 +1,27 @@
 import { Error, Loader, SongCard } from "../components";
 import { genres } from "../assets/constants";
+import { useGetTopChartsQuery } from "../redux/services/shazamcore";
+import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
 
 const Discover = () => {
-  const genreTitle = "Pop";
+  const [genre, setGenre] = useState("POP");
+  const { data, isFetching, error } = useGetTopChartsQuery(genre);
+  const dispatch = useDispatch();
+  const { activeSong, isPlaying } = useSelector((state) => state.player);
+
+  if (isFetching) {
+    return <Loader title="Loading songs..." />;
+  }
+
+  if (error) {
+    return <Error />;
+  }
 
   return (
     <div className="flex flex-col">
       <div className="w-full flex justify-between items-center sm:flex-row flex-col mt-4 mb-10">
-        <h2 className="font-bold text-3xl text-white text-left">
-          Discover {genreTitle}
-        </h2>
+        <h2 className="font-bold text-3xl text-white text-left">Discover</h2>
         <select
           onChange={() => {}}
           value=""
@@ -23,8 +35,17 @@ const Discover = () => {
         </select>
       </div>
       <div className="flex flex-wrap sm:justify-start justify-center gap-8">
-        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((song, i) => {
-          return <SongCard key={song.key} song={song} i={i} />;
+        {data?.map((song, i) => {
+          return (
+            <SongCard
+              key={song.key}
+              isPlaying={isPlaying}
+              activeSong={activeSong}
+              data={data}
+              song={song}
+              i={i}
+            />
+          );
         })}
       </div>
     </div>
