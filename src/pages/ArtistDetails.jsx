@@ -3,6 +3,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { DetailsHeader, Error, Loader, RelatedSongs } from "../components";
 import { useGetArtistDetailsQuery } from "../redux/services/shazamcore";
 
+
+
 function ArtistDetails() {
   const { id: artistId } = useParams();
   const dispatch = useDispatch();
