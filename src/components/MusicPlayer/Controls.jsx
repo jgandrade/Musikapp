@@ -23,7 +23,7 @@ const Controls = ({
       size={20}
       color={repeat ? "red" : "white"}
       onClick={() => setRepeat((prev) => !prev)}
-      className="hidden sm:block cursor-pointer"
+      className="block cursor-pointer"
     />
     {currentSongs?.length && (
       <MdSkipPrevious
@@ -60,7 +60,7 @@ const Controls = ({
       size={20}
       color={shuffle ? "red" : "white"}
       onClick={() => setShuffle((prev) => !prev)}
-      className="hidden sm:block cursor-pointer"
+      className="block cursor-pointer"
     />
   </div>
 );
