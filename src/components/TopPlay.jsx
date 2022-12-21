@@ -36,11 +36,15 @@ const TopChartCard = ({
           <Link to={`/songs/${song.key}`}>
             <p className="text-xl font-bold text-white">{song?.title}</p>
           </Link>
-          <Link to={`/artists/${song?.artists[0].adamid}`}>
-            <p className="text-base font-bold text-gray-300">
-              {song?.subtitle}
-            </p>
-          </Link>
+          {song.artists === undefined ? (
+            <></>
+          ) : (
+            <Link to={`/artists/${song?.artists[0].adamid}`}>
+              <p className="text-base font-bold text-gray-300">
+                {song?.subtitle}
+              </p>
+            </Link>
+          )}
         </div>
       </div>
       <PlayPause
@@ -65,7 +69,7 @@ const TopPlay = () => {
     dispatch(playPause(false));
   };
 
-  const handlePlayClick = (song,i) => {
+  const handlePlayClick = (song, i) => {
     dispatch(setActiveSong({ song, data, i }));
     dispatch(playPause(true));
   };
@@ -96,7 +100,7 @@ const TopPlay = () => {
                 i={i}
                 isPlaying={isPlaying}
                 activeSong={activeSong}
-                handlePlayClick={()=>handlePlayClick(e,i)}
+                handlePlayClick={() => handlePlayClick(e, i)}
                 handlePauseClick={handlePauseClick}
               />
             );
@@ -121,19 +125,32 @@ const TopPlay = () => {
             className="mt-4 cursor-grab"
           >
             {topPlays?.map((e, i) => {
+              console.log(e);
               return (
                 <SwiperSlide
                   key={e?.key}
                   style={{ width: "25%", height: "auto" }}
                   className="shadow-lg rounded-full animate-slideright"
                 >
-                  <Link to={`/artists/${e?.artists[0].adamid}`}>
-                    <img
-                      src={e?.images.background}
-                      alt="artist"
-                      className="rounded-full w-full object-cover"
-                    />
-                  </Link>
+                  {e.artists === undefined ? (
+                    e.images === undefined ? (
+                      <></>
+                    ) : (
+                      <img
+                        src={e?.images.background}
+                        alt="artist"
+                        className="rounded-full w-full object-cover"
+                      />
+                    )
+                  ) : (
+                    <Link to={`/artists/${e?.artists[0].adamid}`}>
+                      <img
+                        src={e?.images.background}
+                        alt="artist"
+                        className="rounded-full w-full object-cover"
+                      />
+                    </Link>
+                  )}
                 </SwiperSlide>
               );
             })}
